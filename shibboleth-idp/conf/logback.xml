@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Logs IdP, but not OpenSAML, messages -->
+    <logger name="net.shibboleth.idp" level="INFO"/>
+
+    <!-- Logs OpenSAML, but not IdP, messages -->
+    <logger name="org.opensaml.saml" level="INFO"/>
+    
+    <!-- Logs LDAP related messages -->
+    <logger name="org.ldaptive" level="WARN"/>
+    
+    <!-- Logs inbound and outbound protocols messages at DEBUG level -->
+    <!--
+    <logger name="PROTOCOL_MESSAGE" level="DEBUG" />
+    -->
+
+    <!-- Logs unencrypted SAML at DEBUG level -->
+    <!--
+    <logger name="org.opensaml.saml.saml2.encryption.Encrypter" level="DEBUG" />
+    -->
+
+    <!-- Logs standard system properties during startup at DEBUG level -->
+    <!-- 
+    <logger name="net.shibboleth.idp.log.LogbackLoggingService" level="DEBUG" />
+    -->
+
+    <!-- Especially chatty. -->
+    <logger name="net.shibboleth.idp.saml.attribute.mapping" level="INFO" />
+    <logger name="org.opensaml.saml.metadata.resolver.filter.impl.EntitiesDescriptorNameProcessor" level="INFO" />
+   
+    <logger name="org.apache.xml.security" level="INFO" />
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.apache.catalina" level="ERROR"/>
+    <logger name="org.eclipse.jetty" level="ERROR"/>
+    
+    <!-- Note that ${idp.home} is the only property available for variable substitution. -->
+    
+    <!-- Process log. -->
+    <appender name="IDP_PROCESS" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>%date{ISO8601} - %level [%logger:%line] - %msg%n%ex{short}</Pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="IDP_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Suppress anything below WARN. -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        
+        <File>${idp.home}/logs/idp-warn.log</File>
+        
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${idp.home}/logs/idp-warn-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+        
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>%date{ISO8601} - %level [%logger:%line] - %msg%n%ex{short}</Pattern>
+        </encoder>
+    </appender>
+    
+    <!-- Audit log. -->
+    <appender name="IDP_AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${idp.home}/logs/idp-audit.log</File>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${idp.home}/logs/idp-audit-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>%msg%n</Pattern>
+        </encoder>
+    </appender>
+    
+    <!-- Consent audit log. -->
+    <appender name="IDP_CONSENT_AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${idp.home}/logs/idp-consent-audit.log</File>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${idp.home}/logs/idp-consent-audit-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>%msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="Shibboleth-Audit" level="ALL">
+        <appender-ref ref="IDP_AUDIT"/>
+    </logger>
+
+    <logger name="Shibboleth-Consent-Audit" level="ALL">
+        <appender-ref ref="IDP_CONSENT_AUDIT"/>
+    </logger>
+    
+    <root level="INFO">
+        <appender-ref ref="IDP_PROCESS"/>
+        <appender-ref ref="IDP_WARN" />
+    </root>
+
+</configuration>
