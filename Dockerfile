@@ -5,6 +5,8 @@ MAINTAINER Unicon, Inc.
 ENV JETTY_HOME=/opt/jetty-home \
     JETTY_BASE=/opt/shib-jetty-base\ 
     JETTY_MAX_HEAP=512m \
+    JETTY_BROWSER_SSL_KEYSTORE_PASSWORD=changeme \
+    JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=changeme \
     PATH=$PATH:$JRE_HOME/bin
 
 RUN yum -y update \
@@ -74,8 +76,8 @@ RUN useradd jetty -U -s /bin/false \
     && chmod 750 /opt/jre-home/bin/java \
     && chmod 750 /usr/local/bin/run-jetty.sh /usr/local/bin/init-idp.sh
 
-# Opening 8443 (browser TLS), 9443 (SOAP/mutual TLS auth).
-EXPOSE 8443 9443
+# Opening 4443 (browser TLS), 8443 (SOAP/mutual TLS auth).
+EXPOSE 4443 8443
 
 VOLUME ["/opt/shib-jetty-base/logs"]
 
