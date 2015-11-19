@@ -74,6 +74,7 @@ RUN useradd jetty -U -s /bin/false \
     && chmod -R 640 /opt \
     && chmod -R 750 /opt/shibboleth-idp/bin/ \
     && chmod 750 /opt/jre-home/bin/java \
+    && chmod 750 /opt/jre-home/jre/bin/java \
     && chmod 750 /usr/local/bin/run-jetty.sh /usr/local/bin/init-idp.sh
 
 # Opening 4443 (browser TLS), 8443 (SOAP/mutual TLS auth).
