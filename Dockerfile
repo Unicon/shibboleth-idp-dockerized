@@ -24,8 +24,10 @@ RUN set -x; \
     idp_hash=2519918257f77a80816de3bdb56b940a9f59325b6aa550aad53800291c1dec04; \
     dta_hash=2f547074b06952b94c35631398f36746820a7697; \
 
+    useradd jetty -U -s /bin/false \
+
 # Download Java, verify the hash, and install \
-    cd / \
+    && cd / \
     && wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
     http://download.oracle.com/otn-pub/java/jdk/$java_version-b$java_bnumber/server-jre-$java_version-linux-x64.tar.gz \
     && echo "$java_hash  server-jre-$java_version-linux-x64.tar.gz" | sha256sum -c - \
@@ -62,24 +64,27 @@ RUN set -x; \
     && cd / \
     && wget https://build.shibboleth.net/nexus/content/repositories/releases/net/shibboleth/utilities/jetty9/jetty9-dta-ssl/1.0.0/jetty9-dta-ssl-1.0.0.jar \
     && echo "$dta_hash  jetty9-dta-ssl-1.0.0.jar" | sha1sum -c - \
-    && mv jetty9-dta-ssl-1.0.0.jar /opt/shib-jetty-base/lib/ext/
+    && mv jetty9-dta-ssl-1.0.0.jar /opt/shib-jetty-base/lib/ext/ \
 
+# Setting owner ownership and permissions
+    && chown -R root:jetty /opt \
+    && chmod -R 640 /opt \
+    && chmod 750 /opt/jre-home/bin/java \
+    && chmod 750 /opt/jre-home/jre/bin/java
+    
 COPY shib-jetty-base/ /opt/shib-jetty-base/
 COPY bin/ /usr/local/bin/
 COPY shibboleth-idp/ /opt/shibboleth-idp/
 
 # Creating runtime user and tightening permissions
-RUN useradd jetty -U -s /bin/false \
-    && chown -R root:jetty /opt \
-    && chmod -R 640 /opt \
+
+RUN mkdir /opt/shib-jetty-base/logs \
+    && chown -R root:jetty /opt/shib-jetty-base \
+    && chmod -R 640 /opt/shib-jetty-base \
     && chmod -R 750 /opt/shibboleth-idp/bin/ \
-    && chmod 750 /opt/jre-home/bin/java \
-    && chmod 750 /opt/jre-home/jre/bin/java \
     && chmod 750 /usr/local/bin/run-jetty.sh /usr/local/bin/init-idp.sh
 
 # Opening 4443 (browser TLS), 8443 (SOAP/mutual TLS auth).
 EXPOSE 4443 8443
-
-VOLUME ["/opt/shib-jetty-base/logs"]
 
 CMD ["run-jetty.sh"]
