@@ -11,7 +11,8 @@ Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is v
 Currently maintained tags are:
 
 * lastest: master branch
-* 3.1.2 - The lastest 3.1.2 image
+* 3.2.0 - The latest 3.2.0 image
+* 3.1.2 - The latest 3.1.2 image
 
 Other tags may exists but either are no longer maintained or are not considered production ready.
 
