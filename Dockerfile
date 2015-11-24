@@ -66,25 +66,24 @@ RUN set -x; \
     && echo "$dta_hash  jetty9-dta-ssl-1.0.0.jar" | sha1sum -c - \
     && mv jetty9-dta-ssl-1.0.0.jar /opt/shib-jetty-base/lib/ext/ \
 
-# Setting owner ownership and permissions
+# Setting owner ownership and permissions on new items in this command
     && chown -R root:jetty /opt \
     && chmod -R 640 /opt \
     && chmod 750 /opt/jre-home/bin/java \
     && chmod 750 /opt/jre-home/jre/bin/java
     
-COPY shib-jetty-base/ /opt/shib-jetty-base/
 COPY bin/ /usr/local/bin/
-COPY shibboleth-idp/ /opt/shibboleth-idp/
+COPY opt/shib-jetty-base/ /opt/shib-jetty-base/
+COPY opt/shibboleth-idp/ /opt/shibboleth-idp/
 
-# Creating runtime user and tightening permissions
-
+# Setting owner ownership and permissions on new items from the COPY command
 RUN mkdir /opt/shib-jetty-base/logs \
     && chown -R root:jetty /opt/shib-jetty-base \
     && chmod -R 640 /opt/shib-jetty-base \
-    && chmod -R 750 /opt/shibboleth-idp/bin/ \
+    && chmod -R 750 /opt/shibboleth-idp/bin \
     && chmod 750 /usr/local/bin/run-jetty.sh /usr/local/bin/init-idp.sh
 
-# Opening 4443 (browser TLS), 8443 (SOAP/mutual TLS auth).
+# Opening 4443 (browser TLS), 8443 (mutual auth TLS)
 EXPOSE 4443 8443
 
 CMD ["run-jetty.sh"]
