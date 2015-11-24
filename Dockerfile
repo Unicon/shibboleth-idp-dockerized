@@ -18,8 +18,8 @@ RUN set -x; \
     java_bnumber=17; \
     java_semver=1.8.0_65; \
     java_hash=0e46f8669719a5d2ffa586afe3d6f3cc2560691edcd9e0a032943e82922a9c8a; \
-    jetty_version=9.3.5.v20151012; \
-    jetty_hash=c87935028ac6650232e2136b1d4ba7b1ab21b9e0; \
+    jetty_version=9.3.6.v20151106; \
+    jetty_hash=dea497c2794cb40d2175236192e1cda6baacb5bf; \
     idp_version=3.1.2; \
     idp_hash=2519918257f77a80816de3bdb56b940a9f59325b6aa550aad53800291c1dec04; \
     dta_hash=2f547074b06952b94c35631398f36746820a7697; \
