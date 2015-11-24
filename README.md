@@ -109,6 +109,11 @@ It maybe desirable to map things like  `/opt/shibboleth-idp/logs` or `/opt/shibb
 ## Notables
 There are a few things that implementors should be aware of.
 
+### Browser-based TLS Certificate and Key
+This image expects to find the TLS certificate and key for browser based communication in `/opt/shibboleth-idp/credentials/idp-browser.p12`. This certificate can be self-signed or be signed by a commerical certificate authority. If signed by the later, the appropriate intermediate certificate(s) should be included in the .p12 file. The appopriate `openssl` commands can be found on <http://www.eclipse.org/jetty/documentation/current/configuring-ssl.html>. The container will fully start without this file. 
+
+Changes to the key store type, location, etc. can be changed by modifying `shib-jetty-base/etc/jetty-ssl-context.xml`.
+
 ### Externalizing Secrets and Credentials
 Some adopters will not want to include their secrets (key files and passwords) in their customized images. This image has been enhanced to faciliate externalizing those and connecting them in at runtime.
 
