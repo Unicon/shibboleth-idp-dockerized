@@ -9,6 +9,10 @@ ENV JETTY_HOME=/opt/jetty-home \
     JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=changeme \
     PATH=$PATH:$JRE_HOME/bin
 
+LABEL idp.java.version="1.8.0_65" \
+      idp.jetty.version="9.3.6.v v20151106" \
+      idp.version="3.2.0"
+
 RUN yum -y update \
     && yum -y install wget tar \
     && yum -y clean all
