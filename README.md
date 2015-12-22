@@ -28,6 +28,8 @@ docker run -it -v $(pwd):/ext-mount --name=shib_deleteme unicon/shibboleth-idp i
 
 The files in the `customized-shibboleth-idp/` directory are your IdP specific files. Safe guard them, especially the `credentials/` directory. You will apply these files to the IdP base image in your own custom image.
 
+Also, included are directories that one would often customized, such as the images, css, and page templates themselves. The baseline files have been exported and can be modified.
+
 ## Using the Image
 You can use this image as a base image for one's own IdP deployment. Assuming that you have a layout with your configuration, credentials, and war customizations (see above). The directory structure could look like:
 
@@ -65,6 +67,9 @@ You can use this image as a base image for one's own IdP deployment. Assuming th
 |   |   |   |-- dummylogo.png
 |   |   |-- WEB-INF/
 |   |   |   |-- web.xml
+|   |-- views/
+|   |   |   |-- login.vm
+|   |   |   |-- logout.vm
 ```
 
 Next, assuming you create a Dockerfile similar to this example:
@@ -108,7 +113,7 @@ The container will use environmental variables to control IdP functionality at r
 
 * `-e JETTY_BROWSER_SSL_KEYSTORE_PASSWORD=<changeme>`: The password for the browser TLS p12 key store (`/opt/shibboleth-idp/credentials/idp-browser.p12`). Defaults to `changeme`.
 * `-e JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=<changeme>`: The password for the browser TLS p12 key store (`/opt/shibboleth-idp/credentials/idp-backchannel.p12`). Defaults to `changeme`.
-* `-e JETTY_MAX_HEAP=<512m>`: Specifies the maximum heap sized used by Jetty's child process to run the IdP application.
+* `-e JETTY_MAX_HEAP=<2048m>`: Specifies the maximum heap sized used by Jetty's child process to run the IdP application.
 
 ### Volume Mount
 The IdP container does not explicitally need any volumes mapped for operation, but the option does exist using the following format:

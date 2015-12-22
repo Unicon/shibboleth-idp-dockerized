@@ -8,7 +8,7 @@ LABEL idp.java.version="1.8.0_65" \
 
 ENV JETTY_HOME=/opt/jetty-home \
     JETTY_BASE=/opt/shib-jetty-base\ 
-    JETTY_MAX_HEAP=512m \
+    JETTY_MAX_HEAP=2048m \
     JETTY_BROWSER_SSL_KEYSTORE_PASSWORD=changeme \
     JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=changeme \
     PATH=$PATH:$JRE_HOME/bin
@@ -50,7 +50,6 @@ RUN set -x; \
 # Config Jetty \
     && cd / \
     && cp /opt/jetty-home/bin/jetty.sh /etc/init.d/jetty \
-    && sed -i -e 's/"-Djetty\.logging\.dir=$JETTY_LOGS"//g' /etc/init.d/jetty \
     && mkdir -p /opt/shib-jetty-base/modules /opt/shib-jetty-base/lib/ext /opt/shib-jetty-base/resources \
     && cd /opt/shib-jetty-base \
     && touch start.ini \
