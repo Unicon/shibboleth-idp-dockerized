@@ -50,7 +50,6 @@ RUN set -x; \
 # Config Jetty \
     && cd / \
     && cp /opt/jetty-home/bin/jetty.sh /etc/init.d/jetty \
-    && sed -i -e 's/"-Djetty\.logging\.dir=$JETTY_LOGS"//g' /etc/init.d/jetty \
     && mkdir -p /opt/shib-jetty-base/modules /opt/shib-jetty-base/lib/ext /opt/shib-jetty-base/resources \
     && cd /opt/shib-jetty-base \
     && touch start.ini \
