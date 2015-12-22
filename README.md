@@ -28,6 +28,8 @@ docker run -it -v $(pwd):/ext-mount --name=shib_deleteme unicon/shibboleth-idp i
 
 The files in the `customized-shibboleth-idp/` directory are your IdP specific files. Safe guard them, especially the `credentials/` directory. You will apply these files to the IdP base image in your own custom image.
 
+Also, included are directories that one would often customized, such as the images, css, and page templates themselves. The baseline files have been exported and can be modified.
+
 ## Using the Image
 You can use this image as a base image for one's own IdP deployment. Assuming that you have a layout with your configuration, credentials, and war customizations (see above). The directory structure could look like:
 
@@ -65,6 +67,9 @@ You can use this image as a base image for one's own IdP deployment. Assuming th
 |   |   |   |-- dummylogo.png
 |   |   |-- WEB-INF/
 |   |   |   |-- web.xml
+|   |-- views/
+|   |   |   |-- login.vm
+|   |   |   |-- logout.vm
 ```
 
 Next, assuming you create a Dockerfile similar to this example:
