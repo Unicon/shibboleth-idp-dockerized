@@ -14,7 +14,7 @@ ENV JETTY_HOME=/opt/jetty-home \
     PATH=$PATH:$JRE_HOME/bin
 
 RUN yum -y update \
-    && yum -y install wget tar \
+    && yum -y install wget tar yum \
     && yum -y clean all
 
 RUN set -x; \
