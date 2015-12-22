@@ -1,7 +1,7 @@
 [![](https://badge.imagelayers.io/unicon/shibboleth-idp:latest.svg)](https://imagelayers.io/?images=unicon/shibboleth-idp:latest 'image layer analysis')
 
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 3.2.0 running on Java Runtime 1.8 update 65 and Jetty 9.3.6 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
+This Docker image contains a deployed Shibboleth IdP 3.2.1 running on Java Runtime 1.8 update 65 and Jetty 9.3.6 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
 
 Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the Dockerfile directly. This makes the build essentially deterministic. 
 
@@ -11,6 +11,7 @@ Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is v
 Currently maintained tags are:
 
 * lastest: master branch
+* 3.2.1 - The latest 3.2.1 image
 * 3.2.0 - The latest 3.2.0 image
 * 3.1.2 - The latest 3.1.2 image
 
@@ -79,7 +80,8 @@ ADD shibboleth-idp/ /opt/shibboleth-idp/
 The dependant image can be built by running:
 
 ```
-docker build --tag="<org_id>/shibboleth-idp" .
+docker pull centos:centos7
+docker build --tag="<org_id>/shibboleth-idp:<version>" .
 ```
 
 > This will download the base image from the Docker Hub repository. Next, your files are overlaid replacing the base image's counter-parts.
