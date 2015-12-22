@@ -14,7 +14,7 @@ LABEL idp.java.version="1.8.0_65" \
       idp.version="3.1.2"
 
 RUN yum -y update \
-    && yum -y install wget tar \
+    && yum -y install wget tar yum \
     && yum -y clean all
 
 RUN set -x; \
