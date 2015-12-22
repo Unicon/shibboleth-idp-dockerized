@@ -8,7 +8,7 @@ LABEL idp.java.version="1.8.0_65" \
 
 ENV JETTY_HOME=/opt/jetty-home \
     JETTY_BASE=/opt/shib-jetty-base\ 
-    JETTY_MAX_HEAP=512m \
+    JETTY_MAX_HEAP=2048m \
     JETTY_BROWSER_SSL_KEYSTORE_PASSWORD=changeme \
     JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=changeme \
     PATH=$PATH:$JRE_HOME/bin

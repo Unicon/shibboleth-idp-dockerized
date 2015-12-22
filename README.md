@@ -108,7 +108,7 @@ The container will use environmental variables to control IdP functionality at r
 
 * `-e JETTY_BROWSER_SSL_KEYSTORE_PASSWORD=<changeme>`: The password for the browser TLS p12 key store (`/opt/shibboleth-idp/credentials/idp-browser.p12`). Defaults to `changeme`.
 * `-e JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=<changeme>`: The password for the browser TLS p12 key store (`/opt/shibboleth-idp/credentials/idp-backchannel.p12`). Defaults to `changeme`.
-* `-e JETTY_MAX_HEAP=<512m>`: Specifies the maximum heap sized used by Jetty's child process to run the IdP application.
+* `-e JETTY_MAX_HEAP=<2048m>`: Specifies the maximum heap sized used by Jetty's child process to run the IdP application.
 
 ### Volume Mount
 The IdP container does not explicitally need any volumes mapped for operation, but the option does exist using the following format:
