@@ -21,7 +21,7 @@ Other tags may exists but either are no longer maintained or are not considered 
 Assuming that you do not already have one, create your initial IdP configuration by run with:
 
 ```
-docker run -it -v $(pwd):/ext-mount --name=shib_deleteme unicon/shibboleth-idp init-idp.sh; docker rm shib_deleteme
+docker run -it -v $(pwd):/ext-mount --rm unicon/shibboleth-idp init-idp.sh
 ```
 
 > This downloads the base image, if it does not already exists, creates a temporary container, and exports the new configuration to the local (Docker Host) file system. After the process completes, the temporary Docker container is deleted as it is no longer needed.
@@ -170,6 +170,8 @@ RUN yum -y install unzip \
 
 > Use of this image requires acceptance of the *Oracle Binary Code License Agreement for the Java SE Platform Products*  (<http://www.oracle.com/technetwork/java/javase/terms/license/index.html>).
 
+## HTTP2 Support
+HTTP2 support is currently experimental.  You can enable it by following the directions found at https://github.com/UniconLabs/dockerized-idp-testbed#http2-support.
 
 ## Building from source:
  
