@@ -2,7 +2,7 @@ FROM centos:centos7
 
 MAINTAINER Unicon, Inc.
 
-LABEL idp.java.version="1.8.0_65" \
+LABEL idp.java.version="1.8.0_71" \
       idp.jetty.version="9.3.6.v20151106" \
       idp.version="3.2.0"
 
@@ -18,10 +18,10 @@ RUN yum -y update \
     && yum -y clean all
 
 RUN set -x; \
-    java_version=8u65; \
-    java_bnumber=17; \
-    java_semver=1.8.0_65; \
-    java_hash=0e46f8669719a5d2ffa586afe3d6f3cc2560691edcd9e0a032943e82922a9c8a; \
+    java_version=8u71; \
+    java_bnumber=15; \
+    java_semver=1.8.0_71; \
+    java_hash=429c3184b10d7af2bb5db3faf20b467566eb5bd95778f8339352c180c8ba48a1; \
     jetty_version=9.3.6.v20151106; \
     jetty_hash=dea497c2794cb40d2175236192e1cda6baacb5bf; \
     idp_version=3.2.0; \
