@@ -1,14 +1,14 @@
 [![](https://badge.imagelayers.io/unicon/shibboleth-idp:latest.svg)](https://imagelayers.io/?images=unicon/shibboleth-idp:latest 'image layer analysis')
 
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 3.2.1 running on Java Runtime 1.8 update 71 and Jetty 9.3.6 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
+This Docker image contains a deployed Shibboleth IdP 3.2.1 running on Java Runtime 1.8 update 71 and Jetty 9.3.7 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
 
 Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the Dockerfile directly. This makes the build essentially deterministic. 
 
 > Use of this image requires acceptance of the *Oracle Binary Code License Agreement for the Java SE Platform Products*  (<http://www.oracle.com/technetwork/java/javase/terms/license/index.html>).
 
 ## Tags
-Currently maintained tags are:
+Currently maintained tags:
 
 * lastest: master branch
 * 3.2.1 - The latest 3.2.1 image
