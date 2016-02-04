@@ -1,7 +1,7 @@
 [![](https://badge.imagelayers.io/unicon/shibboleth-idp:latest.svg)](https://imagelayers.io/?images=unicon/shibboleth-idp:latest 'image layer analysis')
 
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 3.2.1 running on Java Runtime 1.8 update 65 and Jetty 9.3.6 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
+This Docker image contains a deployed Shibboleth IdP 3.2.1 running on Java Runtime 1.8 update 71 and Jetty 9.3.6 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
 
 Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the Dockerfile directly. This makes the build essentially deterministic. 
 
@@ -13,9 +13,11 @@ Currently maintained tags are:
 * lastest: master branch
 * 3.2.1 - The latest 3.2.1 image
 * 3.2.0 - The latest 3.2.0 image
+
+Retired tags:
 * 3.1.2 - The latest 3.1.2 image
 
-Other tags may exists but either are no longer maintained or are not considered production ready.
+Retired tags contain a valid version of the IdP, but are no longer rev'd when new Java and Jetty releaseds are made. Other tags may exists but either are no longer maintained or are not considered production ready.
 
 ## Creating a Shibboleth IdP Configuration
 Assuming that you do not already have one, create your initial IdP configuration by run with:
