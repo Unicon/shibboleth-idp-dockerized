@@ -3,7 +3,7 @@ FROM centos:centos7
 MAINTAINER Unicon, Inc.
 
 LABEL idp.java.version="1.8.0_71" \
-      idp.jetty.version="9.3.6.v20151106" \
+      idp.jetty.version="9.3.7.v20160115" \
       idp.version="3.2.0"
 
 ENV JETTY_HOME=/opt/jetty-home \
@@ -22,8 +22,8 @@ RUN set -x; \
     java_bnumber=15; \
     java_semver=1.8.0_71; \
     java_hash=429c3184b10d7af2bb5db3faf20b467566eb5bd95778f8339352c180c8ba48a1; \
-    jetty_version=9.3.6.v20151106; \
-    jetty_hash=dea497c2794cb40d2175236192e1cda6baacb5bf; \
+    jetty_version=9.3.7.v20160115; \
+    jetty_hash=8d957f7223a3f3b795a79952f8e8081e93cf06b0; \
     idp_version=3.2.0; \
     idp_hash=302c45a4e0814e97a1c01950137d328e0a8630638b35bdd6ae50af9510bcea84; \
     dta_hash=2f547074b06952b94c35631398f36746820a7697; \
