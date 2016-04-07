@@ -9,8 +9,8 @@ ENV JETTY_HOME=/opt/jetty-home \
     JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=changeme \
     PATH=$PATH:$JRE_HOME/bin
 
-LABEL idp.java.version="1.8.0_65" \
-      idp.jetty.version="9.3.6.v v20151106" \
+LABEL idp.java.version="8.0.72" \
+      idp.jetty.version="9.3.6.v20151106" \
       idp.version="3.1.2"
 
 RUN yum -y update \
@@ -18,10 +18,9 @@ RUN yum -y update \
     && yum -y clean all
 
 RUN set -x; \
-    java_version=8u65; \
-    java_bnumber=17; \
-    java_semver=1.8.0_65; \
-    java_hash=0e46f8669719a5d2ffa586afe3d6f3cc2560691edcd9e0a032943e82922a9c8a; \
+    java_version=8.0.72; \
+    zulu_version=8.13.0.5; \
+    java_hash=50b95832b1d072afc178d820e5680687; \
     jetty_version=9.3.6.v20151106; \
     jetty_hash=dea497c2794cb40d2175236192e1cda6baacb5bf; \
     idp_version=3.1.2; \
@@ -32,12 +31,11 @@ RUN set -x; \
 
 # Download Java, verify the hash, and install \
     && cd / \
-    && wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-    http://download.oracle.com/otn-pub/java/jdk/$java_version-b$java_bnumber/server-jre-$java_version-linux-x64.tar.gz \
-    && echo "$java_hash  server-jre-$java_version-linux-x64.tar.gz" | sha256sum -c - \
-    && tar -zxvf server-jre-$java_version-linux-x64.tar.gz -C /opt \
-    && rm server-jre-$java_version-linux-x64.tar.gz \
-    && ln -s /opt/jdk$java_semver/ /opt/jre-home \
+    && wget http://cdn.azul.com/zulu/bin/zulu$zulu_version-jdk$java_version-linux_x64.tar.gz \
+    && echo "$java_hash  zulu$zulu_version-jdk$java_version-linux_x64.tar.gz" | md5sum -c - \
+    && tar -zxvf zulu$zulu_version-jdk$java_version-linux_x64.tar.gz -C /opt \
+    && rm zulu$zulu_version-jdk$java_version-linux_x64.tar.gz \
+    && ln -s /opt/zulu$zulu_version-jdk$java_version-linux_x64/jre/ /opt/jre-home \
 
 # Download Jetty, verify the hash, and install, initialize a new base \
     && cd / \
@@ -73,8 +71,7 @@ RUN set -x; \
 # Setting owner ownership and permissions on new items in this command
     && chown -R root:jetty /opt \
     && chmod -R 640 /opt \
-    && chmod 750 /opt/jre-home/bin/java \
-    && chmod 750 /opt/jre-home/jre/bin/java
+    && chmod 750 /opt/jre-home/bin/java
     
 COPY bin/ /usr/local/bin/
 COPY opt/shib-jetty-base/ /opt/shib-jetty-base/
