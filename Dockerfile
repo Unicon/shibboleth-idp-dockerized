@@ -2,7 +2,7 @@ FROM centos:centos7
 
 MAINTAINER Unicon, Inc.
 
-LABEL idp.java.version="1.8.0_71" \
+LABEL idp.java.version="8.0.72" \
       idp.jetty.version="9.3.7.v20160115" \
       idp.version="3.2.1"
 
@@ -18,10 +18,9 @@ RUN yum -y update \
     && yum -y clean all
 
 RUN set -x; \
-    java_version=8u71; \
-    java_bnumber=15; \
-    java_semver=1.8.0_71; \
-    java_hash=429c3184b10d7af2bb5db3faf20b467566eb5bd95778f8339352c180c8ba48a1; \
+    java_version=8.0.72; \
+    zulu_version=8.13.0.5; \
+    java_hash=50b95832b1d072afc178d820e5680687; \
     jetty_version=9.3.7.v20160115; \
     jetty_hash=8d957f7223a3f3b795a79952f8e8081e93cf06b0; \
     idp_version=3.2.1; \
@@ -32,12 +31,11 @@ RUN set -x; \
 
 # Download Java, verify the hash, and install \
     && cd / \
-    && wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-    http://download.oracle.com/otn-pub/java/jdk/$java_version-b$java_bnumber/server-jre-$java_version-linux-x64.tar.gz \
-    && echo "$java_hash  server-jre-$java_version-linux-x64.tar.gz" | sha256sum -c - \
-    && tar -zxvf server-jre-$java_version-linux-x64.tar.gz -C /opt \
-    && rm server-jre-$java_version-linux-x64.tar.gz \
-    && ln -s /opt/jdk$java_semver/ /opt/jre-home \
+    && wget http://cdn.azul.com/zulu/bin/zulu$zulu_version-jdk$java_version-linux_x64.tar.gz \
+    && echo "$java_hash  zulu$zulu_version-jdk$java_version-linux_x64.tar.gz" | md5sum -c - \
+    && tar -zxvf zulu$zulu_version-jdk$java_version-linux_x64.tar.gz -C /opt \
+    && rm zulu$zulu_version-jdk$java_version-linux_x64.tar.gz \
+    && ln -s /opt/zulu$zulu_version-jdk$java_version-linux_x64/jre/ /opt/jre-home \
 
 # Download Jetty, verify the hash, and install, initialize a new base \
     && cd / \
@@ -72,8 +70,7 @@ RUN set -x; \
 # Setting owner ownership and permissions on new items in this command
     && chown -R root:jetty /opt \
     && chmod -R 640 /opt \
-    && chmod 750 /opt/jre-home/bin/java \
-    && chmod 750 /opt/jre-home/jre/bin/java
+    && chmod 750 /opt/jre-home/bin/java
     
 COPY bin/ /usr/local/bin/
 COPY opt/shib-jetty-base/ /opt/shib-jetty-base/
