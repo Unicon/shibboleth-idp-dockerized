@@ -4,11 +4,9 @@
 Docker Hub images have not yet been updated, but will be soon. Instructions for switching to Oracle Java for local use will be added shortly. See issue-#19 for details and comments.
 
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 3.2.1 running on Java Runtime 1.8 update 71 and Jetty 9.3.7 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
+This Docker image contains a deployed Shibboleth IdP 3.2.1 running on OpenJDK-based Zulu 8 Update 72 and Jetty 9.3.7 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
 
 Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the Dockerfile directly. This makes the build essentially deterministic. 
-
-> Use of this image requires acceptance of the *Oracle Binary Code License Agreement for the Java SE Platform Products*  (<http://www.oracle.com/technetwork/java/javase/terms/license/index.html>).
 
 ## Tags
 Currently maintained tags:
@@ -158,31 +156,14 @@ Jetty Logs and Shibboleth IdP's `idp-process.log`are redirected to the console a
 
 Removing the `/opt/shib-jetty-base/etc/jetty-logging.xml` (or setting it to your own configuration) will cause Jetty's default behavior to occur. Restoring the IdP's baseline `logback.xml` via overlaying will cause the default IdP file logging behavior to occur.
 
-## Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files
-Due to export concerns the Shibboleth IdP image does not ship with the Unlimited Strength JCE files. To add them to your image, add the following RUN command as a step in your `Dockerfile`.
-
-```
-RUN yum -y install unzip \
-    && wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-    http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
-    && echo "f3020a3922efd6626c2fff45695d527f34a8020e938a49292561f18ad1320b59  jce_policy-8.zip" | sha256sum -c - \
-    && unzip -oj jce_policy-8.zip UnlimitedJCEPolicyJDK8/local_policy.jar -d /opt/jre-home/jre/lib/security/ \
-    && unzip -oj jce_policy-8.zip UnlimitedJCEPolicyJDK8/US_export_policy.jar -d /opt/jre-home/jre/lib/security/ \
-    && rm jce_policy-8.zip \
-    && chmod -R 640 /opt/jre-home/jre/lib/security/ \
-    && chown -R root:jetty /opt/jre-home/jre/lib/security/    
-```
-
-> Use of this image requires acceptance of the *Oracle Binary Code License Agreement for the Java SE Platform Products*  (<http://www.oracle.com/technetwork/java/javase/terms/license/index.html>).
-
-## HTTP2 Support
-HTTP2 support is currently experimental.  You can enable it by following the directions found at https://github.com/UniconLabs/dockerized-idp-testbed#http2-support.
-
 ## Building from source:
  
 ```
 $ docker build --tag="<org_id>/shibboleth-idp" github.com/unicon/shibboleth-idp-dockerized
 ```
+
+## Recipes
+Instructions for things like use the Oracle JVM and JCE with this image can be found at <https://github.com/Unicon/shibboleth-idp-dockerized/wiki/>.
 
 ## Authors/Contributors
 
@@ -190,7 +171,7 @@ $ docker build --tag="<org_id>/shibboleth-idp" github.com/unicon/shibboleth-idp-
 
 ## LICENSE
 
-Copyright 2015 Unicon, Inc.
+Copyright 2016 Unicon, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
