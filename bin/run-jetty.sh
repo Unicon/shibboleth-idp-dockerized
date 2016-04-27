@@ -13,6 +13,4 @@ fi
 export JETTY_ARGS="jetty.sslContext.keyStorePassword=$JETTY_BROWSER_SSL_KEYSTORE_PASSWORD jetty.backchannel.sslContext.keyStorePassword=$JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD"
 sed -i "s/^-Xmx.*$/-Xmx$JETTY_MAX_HEAP/g" /opt/shib-jetty-base/start.ini
 
-echo "Use of this image/container constitutes acceptence of the Oracle Binary Code License Agreement for Java SE."
-
 exec /etc/init.d/jetty run
