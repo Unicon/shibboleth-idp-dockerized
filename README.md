@@ -1,11 +1,9 @@
 [![](https://badge.imagelayers.io/unicon/shibboleth-idp:latest.svg)](https://imagelayers.io/?images=unicon/shibboleth-idp:latest 'image layer analysis')
 
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 3.1.2 running on Java Runtime 1.8 update 65 and Jetty 9.3.5 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
+This Docker image contains a deployed Shibboleth IdP 3.1.2 running on OpenJDK-based Zulu 8 Update 72 and Jetty 9.3.5 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
 
 Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the Dockerfile directly. This makes the build essentially deterministic. 
-
-> Use of this image requires acceptance of the *Oracle Binary Code License Agreement for the Java SE Platform Products*  (<http://www.oracle.com/technetwork/java/javase/terms/license/index.html>).
 
 ## Creating a Shibboleth IdP Configuration
 Assuming that you do not already have one, create your initial IdP configuration by run with:
@@ -136,24 +134,6 @@ When the container starts up, if the `/opt/shibboleth-idp/ext-conf/idp-secrets.p
 Jetty Logs and Shibboleth IdP's `idp-process.log`are redirected to the console and are exposed via the `docker logs` command and other Docker logging methods. 
 
 Removing the `/opt/shib-jetty-base/etc/jetty-logging.xml` (or setting it to your own configuration) will cause Jetty's default behavior to occur. Restoring the IdP's baseline `logback.xml` via overlaying will cause the default IdP file logging behavior to occur.
-
-## Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files
-Due to export concerns the Shibboleth IdP image does not ship with the Unlimited Strength JCE files. To add them to your image, add the following RUN command as a step in your `Dockerfile`.
-
-```
-RUN yum -y install unzip \
-    && wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-    http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
-    && echo "f3020a3922efd6626c2fff45695d527f34a8020e938a49292561f18ad1320b59  jce_policy-8.zip" | sha256sum -c - \
-    && unzip -oj jce_policy-8.zip UnlimitedJCEPolicyJDK8/local_policy.jar -d /opt/jre-home/jre/lib/security/ \
-    && unzip -oj jce_policy-8.zip UnlimitedJCEPolicyJDK8/US_export_policy.jar -d /opt/jre-home/jre/lib/security/ \
-    && rm jce_policy-8.zip \
-    && chmod -R 640 /opt/jre-home/jre/lib/security/ \
-    && chown -R root:jetty /opt/jre-home/jre/lib/security/    
-```
-
-> Use of this image requires acceptance of the *Oracle Binary Code License Agreement for the Java SE Platform Products*  (<http://www.oracle.com/technetwork/java/javase/terms/license/index.html>).
-
 
 ## Building from source:
  
