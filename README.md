@@ -1,11 +1,9 @@
 [![](https://badge.imagelayers.io/unicon/shibboleth-idp:latest.svg)](https://imagelayers.io/?images=unicon/shibboleth-idp:latest 'image layer analysis')
 
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 3.2.0 running on Java Runtime 1.8 update 71 and Jetty 9.3.7 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
+This Docker image contains a deployed Shibboleth IdP 3.2.0 running on OpenJDK-based Zulu 8 Update 72 and Jetty 9.3.7 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
 
 Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the Dockerfile directly. This makes the build essentially deterministic. 
-
-> Use of this image requires acceptance of the *Oracle Binary Code License Agreement for the Java SE Platform Products*  (<http://www.oracle.com/technetwork/java/javase/terms/license/index.html>).
 
 ## Tags
 Currently maintained tags:
@@ -23,12 +21,14 @@ Retired tags contain a valid version of the IdP, but are no longer rev'd when ne
 Assuming that you do not already have one, create your initial IdP configuration by run with:
 
 ```
-docker run -it -v $(pwd):/ext-mount --name=shib_deleteme unicon/shibboleth-idp init-idp.sh; docker rm shib_deleteme
+docker run -it -v $(pwd):/ext-mount --rm unicon/shibboleth-idp init-idp.sh
 ```
 
 > This downloads the base image, if it does not already exists, creates a temporary container, and exports the new configuration to the local (Docker Host) file system. After the process completes, the temporary Docker container is deleted as it is no longer needed.
 
 The files in the `customized-shibboleth-idp/` directory are your IdP specific files. Safe guard them, especially the `credentials/` directory. You will apply these files to the IdP base image in your own custom image.
+
+Also, included are directories that one would often customized, such as the images, css, and page templates themselves. The baseline files have been exported and can be modified.
 
 ## Using the Image
 You can use this image as a base image for one's own IdP deployment. Assuming that you have a layout with your configuration, credentials, and war customizations (see above). The directory structure could look like:
@@ -67,6 +67,9 @@ You can use this image as a base image for one's own IdP deployment. Assuming th
 |   |   |   |-- dummylogo.png
 |   |   |-- WEB-INF/
 |   |   |   |-- web.xml
+|   |-- views/
+|   |   |   |-- login.vm
+|   |   |   |-- logout.vm
 ```
 
 Next, assuming you create a Dockerfile similar to this example:
@@ -82,7 +85,8 @@ ADD shibboleth-idp/ /opt/shibboleth-idp/
 The dependant image can be built by running:
 
 ```
-docker build --tag="<org_id>/shibboleth-idp" .
+docker pull centos:centos7
+docker build --tag="<org_id>/shibboleth-idp:<version>" .
 ```
 
 > This will download the base image from the Docker Hub repository. Next, your files are overlaid replacing the base image's counter-parts.
@@ -109,7 +113,7 @@ The container will use environmental variables to control IdP functionality at r
 
 * `-e JETTY_BROWSER_SSL_KEYSTORE_PASSWORD=<changeme>`: The password for the browser TLS p12 key store (`/opt/shibboleth-idp/credentials/idp-browser.p12`). Defaults to `changeme`.
 * `-e JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=<changeme>`: The password for the browser TLS p12 key store (`/opt/shibboleth-idp/credentials/idp-backchannel.p12`). Defaults to `changeme`.
-* `-e JETTY_MAX_HEAP=<512m>`: Specifies the maximum heap sized used by Jetty's child process to run the IdP application.
+* `-e JETTY_MAX_HEAP=<2048m>`: Specifies the maximum heap sized used by Jetty's child process to run the IdP application.
 
 ### Volume Mount
 The IdP container does not explicitally need any volumes mapped for operation, but the option does exist using the following format:
@@ -149,29 +153,14 @@ Jetty Logs and Shibboleth IdP's `idp-process.log`are redirected to the console a
 
 Removing the `/opt/shib-jetty-base/etc/jetty-logging.xml` (or setting it to your own configuration) will cause Jetty's default behavior to occur. Restoring the IdP's baseline `logback.xml` via overlaying will cause the default IdP file logging behavior to occur.
 
-## Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files
-Due to export concerns the Shibboleth IdP image does not ship with the Unlimited Strength JCE files. To add them to your image, add the following RUN command as a step in your `Dockerfile`.
-
-```
-RUN yum -y install unzip \
-    && wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-    http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
-    && echo "f3020a3922efd6626c2fff45695d527f34a8020e938a49292561f18ad1320b59  jce_policy-8.zip" | sha256sum -c - \
-    && unzip -oj jce_policy-8.zip UnlimitedJCEPolicyJDK8/local_policy.jar -d /opt/jre-home/jre/lib/security/ \
-    && unzip -oj jce_policy-8.zip UnlimitedJCEPolicyJDK8/US_export_policy.jar -d /opt/jre-home/jre/lib/security/ \
-    && rm jce_policy-8.zip \
-    && chmod -R 640 /opt/jre-home/jre/lib/security/ \
-    && chown -R root:jetty /opt/jre-home/jre/lib/security/    
-```
-
-> Use of this image requires acceptance of the *Oracle Binary Code License Agreement for the Java SE Platform Products*  (<http://www.oracle.com/technetwork/java/javase/terms/license/index.html>).
-
-
 ## Building from source:
  
 ```
 $ docker build --tag="<org_id>/shibboleth-idp" github.com/unicon/shibboleth-idp-dockerized
 ```
+
+## Recipes
+Instructions for things like use the Oracle JVM and JCE with this image can be found at <https://github.com/Unicon/shibboleth-idp-dockerized/wiki/>.
 
 ## Authors/Contributors
 
@@ -179,7 +168,7 @@ $ docker build --tag="<org_id>/shibboleth-idp" github.com/unicon/shibboleth-idp-
 
 ## LICENSE
 
-Copyright 2015 Unicon, Inc.
+Copyright 2016 Unicon, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
