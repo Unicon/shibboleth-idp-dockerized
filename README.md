@@ -1,5 +1,8 @@
 [![](https://badge.imagelayers.io/unicon/shibboleth-idp:latest.svg)](https://imagelayers.io/?images=unicon/shibboleth-idp:latest 'image layer analysis')
 
+# Breaking change. This image is now based on OpenJDK Zulu and not Oracle Java.
+Docker Hub images have not yet been updated, but will be soon. Instructions for switching to Oracle Java for local use will be added shortly. See issue-#19 for details and comments.
+
 ## Overview
 This Docker image contains a deployed Shibboleth IdP 3.2.1 running on Java Runtime 1.8 update 71 and Jetty 9.3.7 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
 
