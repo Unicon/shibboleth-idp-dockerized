@@ -8,6 +8,7 @@ cd /opt/shibboleth-idp/bin
 # Remove existing config to build starts with an empty config
 rm -r ../conf/
 
+echo "Please complete the folllowing for your IdP environment:"
 ./build.sh -Didp.target.dir=/opt/shibboleth-idp init gethostname askscope metadata-gen
 
 mkdir -p /ext-mount/customized-shibboleth-idp/conf/
