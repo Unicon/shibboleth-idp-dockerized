@@ -23,8 +23,8 @@ RUN set -x; \
     java_hash=50b95832b1d072afc178d820e5680687; \
     jetty_version=9.3.7.v20160115; \
     jetty_hash=8d957f7223a3f3b795a79952f8e8081e93cf06b0; \
-    idp_version=3.2.1; \
-    idp_hash=231d100c81f3039f08782cc46067718b2fedf2d988fccc543250fb1813a2bc20; \
+    idp_version=3.3.0; \
+    idp_hash=558c6b71e6eba8fbdff19ee8857368d1a6facdfe2c703afc70d5b1655411f552; \
     dta_hash=2f547074b06952b94c35631398f36746820a7697; \
 
     useradd jetty -U -s /bin/false \
