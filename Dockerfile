@@ -7,7 +7,7 @@ LABEL idp.java.version="8.0.72" \
       idp.version="3.2.1"
 
 ENV JETTY_HOME=/opt/jetty-home \
-    JETTY_BASE=/opt/shib-jetty-base\ 
+    JETTY_BASE=/opt/shib-jetty-base \
     JETTY_MAX_HEAP=2048m \
     JETTY_BROWSER_SSL_KEYSTORE_PASSWORD=changeme \
     JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=changeme \
@@ -71,7 +71,7 @@ RUN set -x; \
     && chown -R root:jetty /opt \
     && chmod -R 640 /opt \
     && chmod 750 /opt/jre-home/bin/java
-    
+
 COPY bin/ /usr/local/bin/
 COPY opt/shib-jetty-base/ /opt/shib-jetty-base/
 COPY opt/shibboleth-idp/ /opt/shibboleth-idp/
