@@ -10,6 +10,8 @@ This Docker image contains a deployed Shibboleth IdP 3.2.1 running on OpenJDK-ba
 
 Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the Dockerfile directly. This makes the build essentially deterministic. 
 
+A working example of how this image can be used can be found at https://github.com/UniconLabs/dockerized-idp-testbed.
+
 ## Tags
 Currently maintained tags:
 
