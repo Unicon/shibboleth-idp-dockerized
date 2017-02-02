@@ -4,7 +4,7 @@ MAINTAINER Unicon, Inc.
 
 LABEL idp.java.version="8.0.72" \
       idp.jetty.version="9.3.7.v20160115" \
-      idp.version="3.2.1"
+      idp.version="3.3.0"
 
 ENV JETTY_HOME=/opt/jetty-home \
     JETTY_BASE=/opt/shib-jetty-base \
