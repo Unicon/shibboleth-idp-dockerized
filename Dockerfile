@@ -2,8 +2,8 @@ FROM centos:centos7
 
 MAINTAINER Unicon, Inc.
 
-LABEL idp.java.version="8.0.72" \
-      idp.jetty.version="9.3.7.v20160115" \
+LABEL idp.java.version="8.0.121" \
+      idp.jetty.version="9.3.16.v20170120" \
       idp.version="3.2.1"
 
 ENV JETTY_HOME=/opt/jetty-home \
@@ -18,11 +18,11 @@ RUN yum -y update \
     && yum -y clean all
 
 RUN set -x; \
-    java_version=8.0.72; \
-    zulu_version=8.13.0.5; \
-    java_hash=50b95832b1d072afc178d820e5680687; \
-    jetty_version=9.3.7.v20160115; \
-    jetty_hash=8d957f7223a3f3b795a79952f8e8081e93cf06b0; \
+    java_version=8.0.121; \
+    zulu_version=8.20.0.5; \
+    java_hash=e5f4b1d997e50ffe4998c68c8ec45403; \
+    jetty_version=9.3.16.v20170120; \
+    jetty_hash=f007648daa13799554a95c5ec31d44deac7e56b8; \
     idp_version=3.2.1; \
     idp_hash=231d100c81f3039f08782cc46067718b2fedf2d988fccc543250fb1813a2bc20; \
     dta_hash=2f547074b06952b94c35631398f36746820a7697; \
@@ -39,7 +39,7 @@ RUN set -x; \
 
 # Download Jetty, verify the hash, and install, initialize a new base \
     && cd / \
-    && wget -O jetty-distribution-$jetty_version.tar.gz "https://eclipse.org/downloads/download.php?file=/jetty/$jetty_version/dist/jetty-distribution-$jetty_version.tar.gz&r=1" \
+    && wget http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/$jetty_version/jetty-distribution-$jetty_version.tar.gz \
     && echo "$jetty_hash  jetty-distribution-$jetty_version.tar.gz" | sha1sum -c - \
     && tar -zxvf jetty-distribution-$jetty_version.tar.gz -C /opt \
     && rm jetty-distribution-$jetty_version.tar.gz \
