@@ -4,7 +4,7 @@ MAINTAINER Unicon, Inc.
 
 LABEL idp.java.version="8.0.121" \
       idp.jetty.version="9.3.16.v20170120" \
-      idp.version="3.3.0"
+      idp.version="3.3.1"
 
 ENV JETTY_HOME=/opt/jetty-home \
     JETTY_BASE=/opt/shib-jetty-base \
@@ -23,8 +23,8 @@ RUN set -x; \
     java_hash=e5f4b1d997e50ffe4998c68c8ec45403; \
     jetty_version=9.3.16.v20170120; \
     jetty_hash=f007648daa13799554a95c5ec31d44deac7e56b8; \
-    idp_version=3.3.0; \
-    idp_hash=558c6b71e6eba8fbdff19ee8857368d1a6facdfe2c703afc70d5b1655411f552; \
+    idp_version=3.3.1; \
+    idp_hash=8bd852dcdc7e6729ee645c0374a3c476b152fa24506fb86ffec33dfd190e607c; \
     dta_hash=2f547074b06952b94c35631398f36746820a7697; \
 
     useradd jetty -U -s /bin/false \
