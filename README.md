@@ -6,7 +6,7 @@ This image is now based on OpenJDK-based Zulu and not Oracle Java. Some Shibbole
 Docker Hub images have been updated utilizing Zulu. Instructions for switching to Oracle Java for local deployments can be view on the [project wiki](https://github.com/Unicon/shibboleth-idp-dockerized/wiki).
 
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 3.3.0 running on OpenJDK-based Zulu 8 Update 121 and Jetty 9.3.16 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
+This Docker image contains a deployed Shibboleth IdP 3.3.1 running on OpenJDK-based Zulu 8 Update 121 and Jetty 9.3.16 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
 
 Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the Dockerfile directly. This makes the build essentially deterministic. 
 
@@ -16,13 +16,13 @@ A working example of how this image can be used can be found at https://github.c
 Currently maintained tags:
 
 * lastest: master branch
-* 3.3.0 - The latest 3.3.0 image
+* 3.3.1 - The latest 3.3.1 image
 * 3.2.1 - The latest 3.2.1 image
 
-
-There are also date-based tags tied to versions to allow users to maintain consistency between minor changes, such as Jetty or Java version upgrades.
+There are also date-based tags tied to versions to allow users to maintain consistency between minor changes, such as Jetty or Java version upgrades. See https://github.com/Unicon/shibboleth-idp-dockerized/wiki/Tags for details.
 
 Retired tags:
+* 3.3.0 - The latest 3.3.0 image
 * 3.2.0 - The latest 3.2.0 image
 * 3.1.2 - The latest 3.1.2 image
 
