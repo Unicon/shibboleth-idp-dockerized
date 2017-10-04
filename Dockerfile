@@ -4,7 +4,7 @@ MAINTAINER Unicon, Inc.
 
 LABEL idp.java.version="8.0.131" \
       idp.jetty.version="9.3.20.v20170531" \
-      idp.version="3.3.1"
+      idp.version="3.3.2"
 
 ENV JETTY_HOME=/opt/jetty-home \
     JETTY_BASE=/opt/shib-jetty-base \
@@ -18,13 +18,13 @@ RUN yum -y update \
     && yum -y clean all
 
 RUN set -x; \
-    java_version=8.0.131; \
-    zulu_version=8.21.0.1; \
-    java_hash=1931ed3beedee0b16fb7fd37e069b162; \
-    jetty_version=9.3.20.v20170531; \
-    jetty_hash=86143a285c90a02577fa1738b50a5e8b7a7d6a2a; \
-    idp_version=3.3.1; \
-    idp_hash=8bd852dcdc7e6729ee645c0374a3c476b152fa24506fb86ffec33dfd190e607c; \
+    java_version=8.0.144; \
+    zulu_version=8.23.0.3; \
+    java_hash=6ecd67688407b9f7e45c2736f003398b; \
+    jetty_version=9.3.21.v20170918; \
+    jetty_hash=8e72e164e8c5f39178904bc00ef4f1a25108af5c; \
+    idp_version=3.3.2; \
+    idp_hash=ed9fbefd273199d2841d4045b2661671c53825ed3c7d52d38bfe516b39d5fc64; \
     dta_hash=2f547074b06952b94c35631398f36746820a7697; \
 
     useradd jetty -U -s /bin/false \
