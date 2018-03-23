@@ -2,8 +2,8 @@ FROM centos:centos7
 
 MAINTAINER Unicon, Inc.
 
-LABEL idp.java.version="8.0.131" \
-      idp.jetty.version="9.3.20.v20170531" \
+LABEL idp.java.version="8.0.163" \
+      idp.jetty.version="9.3.23.v20180228" \
       idp.version="3.3.2"
 
 ENV JETTY_HOME=/opt/jetty-home \
@@ -18,11 +18,11 @@ RUN yum -y update \
     && yum -y clean all
 
 RUN set -x; \
-    java_version=8.0.144; \
-    zulu_version=8.23.0.3; \
-    java_hash=6ecd67688407b9f7e45c2736f003398b; \
-    jetty_version=9.3.21.v20170918; \
-    jetty_hash=8e72e164e8c5f39178904bc00ef4f1a25108af5c; \
+    java_version=8.0.163; \
+    zulu_version=8.28.0.1; \
+    java_hash=9c02c89f37d217d229203e59b57246a8; \
+    jetty_version=9.3.23.v20180228; \
+    jetty_hash=731bd5c54c4f60c9a6ceaadd1f5fd1e2feda021d; \
     idp_version=3.3.2; \
     idp_hash=ed9fbefd273199d2841d4045b2661671c53825ed3c7d52d38bfe516b39d5fc64; \
     dta_hash=2f547074b06952b94c35631398f36746820a7697; \
