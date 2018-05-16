@@ -11,7 +11,10 @@ rm -r ../conf/
 echo "Please complete the following for your IdP environment:"
 ./build.sh -Didp.target.dir=/opt/shibboleth-idp init gethostname askscope metadata-gen
 
+find /opt/shibboleth-idp/ -type d -exec chmod 750 {} \;
+
 mkdir -p /ext-mount/customized-shibboleth-idp/conf/
+chmod -R 750 /ext-mount/customized-shibboleth-idp/
 
 # Copy the essential and routinely customized config to out Docker mount.
 cd ..
