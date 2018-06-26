@@ -143,6 +143,16 @@ This image expects to find the TLS certificate and key for browser based communi
 
 Changes to the key store type, location, etc. can be changed by modifying `shib-jetty-base/etc/jetty-ssl-context.xml`.
 
+To create a sample keystore, use:
+
+```bash
+openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+openssl x509 -text -noout -in certificate.pem
+openssl pkcs12 -inkey key.pem -in certificate.pem -export -out idp-browser.p12
+```
+
+Move the `idp-browser.p12` file into the mounted `directials` directory (See below).
+
 ### Externalizing Secrets and Credentials
 Some adopters will not want to include their secrets (key files and passwords) in their customized images. This image has been enhanced to faciliate externalizing those and connecting them in at runtime.
 
