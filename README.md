@@ -151,7 +151,7 @@ openssl x509 -text -noout -in certificate.pem
 openssl pkcs12 -inkey key.pem -in certificate.pem -export -out idp-browser.p12
 ```
 
-Move the `idp-browser.p12` file into the mounted `directials` directory (See below).
+Move the `idp-browser.p12` file into the mounted `credentials` directory (See below).
 
 ### Externalizing Secrets and Credentials
 Some adopters will not want to include their secrets (key files and passwords) in their customized images. This image has been enhanced to faciliate externalizing those and connecting them in at runtime.
