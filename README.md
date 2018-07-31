@@ -6,9 +6,9 @@ This image is now based on OpenJDK-based Zulu and not Oracle Java. Some Shibbole
 Docker Hub images have been updated utilizing Zulu. Instructions for switching to Oracle Java for local deployments can be view on the [project wiki](https://github.com/Unicon/shibboleth-idp-dockerized/wiki).
 
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 3.3.3 running on OpenJDK-based Zulu 8 Update 163 and Jetty 9.3.23 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes. 
+This Docker image contains a deployed Shibboleth IdP 3.3.3 running on OpenJDK-based Zulu 8 Update 163 and Jetty 9.3.23 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes.
 
-Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the Dockerfile directly. This makes the build essentially deterministic. 
+Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the Dockerfile directly. This makes the build essentially deterministic.
 
 A working example of how this image can be used can be found at https://github.com/UniconLabs/dockerized-idp-testbed.
 
@@ -42,6 +42,20 @@ docker run -it -v $(pwd):/ext-mount --rm unicon/shibboleth-idp init-idp.sh
 The files in the `customized-shibboleth-idp/` directory are your IdP specific files. Safe guard them, especially the `credentials/` directory. You will apply these files to the IdP base image in your own custom image.
 
 Also, included are directories that one would often customized, such as the images, css, and page templates themselves. The baseline files have been exported and can be modified.
+
+This image expects to find the TLS certificate and key for browser based communication in `/opt/shibboleth-idp/credentials/idp-browser.p12`. This certificate can be self-signed or be signed by a commerical certificate authority. If signed by the later, the appropriate intermediate certificate(s) should be included in the .p12 file. The appopriate `openssl` commands can be found on <http://www.eclipse.org/jetty/documentation/current/configuring-ssl.html>. The container will not start without this file.
+
+Changes to the key store type, location, etc. can be changed by modifying `shib-jetty-base/etc/jetty-ssl-context.xml`.
+
+To create a sample keystore, use:
+
+```bash
+openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+openssl x509 -text -noout -in certificate.pem
+openssl pkcs12 -inkey key.pem -in certificate.pem -export -out idp-browser.p12
+```
+
+Move the `idp-browser.p12` file into the `credentials` directory.
 
 ## Using the Image
 You can use this image as a base image for one's own IdP deployment. Assuming that you have a layout with your configuration, credentials, and war customizations (see above). The directory structure could look like:
@@ -107,7 +121,7 @@ docker build --tag="<org_id>/shibboleth-idp:<version>" .
 Now, execute the new/customized image:
 
 ```
-$ docker run -d --name="shib-local-test" <org_id>/shibboleth-idp 
+$ docker run -d --name="shib-local-test" <org_id>/shibboleth-idp
 ```
 
 > This is the base command-line used to start the container. The container will likely fail to initialize if this limited command-line is used. You'll likely need to specify additional parameters to start-up the IdP.
@@ -119,7 +133,7 @@ Start the IdP will take several parameters. The following parameters can be spec
 The image exposes two ports. `4443` is the for standard browser-based TLS communication. `8443` is the backchannel TLS communication port. These ports will need to be mapped to the Docker host so that communication can occur.
 
 * `-P`: Used to indicate that the Docker Service should map all exposed container ports to ephemeral host ports. Use `docker ps` to see the mappings.
-* `-p <host>:<container>`: Explicitly maps the host ports to the container's exposed ports. This parameters can be used multiple times to map multiple sets of ports. `-p 443:4443` would make the IdP accessible on `https://<docker_host_ip>/idp/`. 
+* `-p <host>:<container>`: Explicitly maps the host ports to the container's exposed ports. This parameters can be used multiple times to map multiple sets of ports. `-p 443:4443` would make the IdP accessible on `https://<docker_host_ip>/idp/`.
 
 ### Environmental variables
 The container will use environmental variables to control IdP functionality at runtime. Currently there are 3 such variables that can be set from the `docker run` command:
@@ -137,21 +151,6 @@ It maybe desirable to map things like  `/opt/shibboleth-idp/logs` or `/opt/shibb
 
 ## Notables
 There are a few things that implementors should be aware of.
-
-### Browser-based TLS Certificate and Key
-This image expects to find the TLS certificate and key for browser based communication in `/opt/shibboleth-idp/credentials/idp-browser.p12`. This certificate can be self-signed or be signed by a commerical certificate authority. If signed by the later, the appropriate intermediate certificate(s) should be included in the .p12 file. The appopriate `openssl` commands can be found on <http://www.eclipse.org/jetty/documentation/current/configuring-ssl.html>. The container will fully start without this file. 
-
-Changes to the key store type, location, etc. can be changed by modifying `shib-jetty-base/etc/jetty-ssl-context.xml`.
-
-To create a sample keystore, use:
-
-```bash
-openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
-openssl x509 -text -noout -in certificate.pem
-openssl pkcs12 -inkey key.pem -in certificate.pem -export -out idp-browser.p12
-```
-
-Move the `idp-browser.p12` file into the mounted `credentials` directory (See below).
 
 ### Externalizing Secrets and Credentials
 Some adopters will not want to include their secrets (key files and passwords) in their customized images. This image has been enhanced to faciliate externalizing those and connecting them in at runtime.
@@ -171,13 +170,13 @@ This tells the IdP to look into the `/opt/shibboleth-idp/ext-conf/` directory fo
 
 When the container starts up, if the `/opt/shibboleth-idp/ext-conf/idp-secrets.properties` file is found the TLS key files passwords will be read from the file as properties: `jetty.sslContext.keyStorePassword` (browser) and `jetty.backchannel.sslContext.keyStorePassword` (backchannel). This will preclude needing to specify them via the `-e` parameter.
 
-### Logging 
-Jetty Logs and Shibboleth IdP's `idp-process.log`are redirected to the console and are exposed via the `docker logs` command and other Docker logging methods. 
+### Logging
+Jetty Logs and Shibboleth IdP's `idp-process.log`are redirected to the console and are exposed via the `docker logs` command and other Docker logging methods.
 
 Removing the `/opt/shib-jetty-base/etc/jetty-logging.xml` (or setting it to your own configuration) will cause Jetty's default behavior to occur. Restoring the IdP's baseline `logback.xml` via overlaying will cause the default IdP file logging behavior to occur.
 
 ## Building from source:
- 
+
 ```
 $ docker build --tag="<org_id>/shibboleth-idp" github.com/unicon/shibboleth-idp-dockerized
 ```
