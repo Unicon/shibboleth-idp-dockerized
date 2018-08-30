@@ -145,7 +145,7 @@ The container will use environmental variables to control IdP functionality at r
 ### Volume Mount
 The IdP container does not explicitally need any volumes mapped for operation, but the option does exist using the following format:
 
-* `-v <hostDir:containerDir`
+* `-v <hostDir>:<containerDir>`
 
 It maybe desirable to map things like  `/opt/shibboleth-idp/logs` or `/opt/shibboleth-idp/credentials` to host-side storage.
 
