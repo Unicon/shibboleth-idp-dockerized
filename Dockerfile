@@ -25,7 +25,9 @@ RUN set -x; \
     idp_version=3.4.0; \
     idp_hash=3a6bb6ec42ae22a44ad52bb108875e9699167c808645e7e43137d108841e41ad; \
     dta_hash=2f547074b06952b94c35631398f36746820a7697; \
+    slf4j_version=1.7.25; \
     slf4j_hash=da76ca59f6a57ee3102f8f9bd9cee742973efa8a; \
+    logback_version=1.2.3; \
     logback_classic_hash=7c4f3c474fb2c041d8028740440937705ebb473a; \
     logback_core_hash=864344400c3d4d92dfeb0a305dc87d953677c03c; \
     logback_access_hash=e8a841cb796f6423c7afd8738df6e0e4052bf24a; \
@@ -72,28 +74,27 @@ RUN set -x; \
 
 # Download the slf4j library for Jetty logging, verify the hash, and place \
     && cd / \
-    && wget http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar \
-    && echo "$slf4j_hash  slf4j-api-1.7.25.jar" | sha1sum -c - \
-    && mv slf4j-api-1.7.25.jar /opt/shib-jetty-base/lib/logging/ \
+    && wget http://central.maven.org/maven2/org/slf4j/slf4j-api/$slf4j_version/slf4j-api-$slf4j_version.jar \
+    && echo "$slf4j_hash  slf4j-api-$slf4j_version.jar" | sha1sum -c - \
+    && mv slf4j-api-$slf4j_version.jar /opt/shib-jetty-base/lib/logging/ \
 
 # Download the logback_classic library for Jetty logging, verify the hash, and place \
     && cd / \
-    && wget http://central.maven.org/maven2/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar \
-    && echo "$logback_classic_hash  logback-classic-1.2.3.jar" | sha1sum -c - \
-    && mv logback-classic-1.2.3.jar /opt/shib-jetty-base/lib/logging/ \
+    && wget http://central.maven.org/maven2/ch/qos/logback/logback-classic/$logback_version/logback-classic-$logback_version.jar \
+    && echo "$logback_classic_hash  logback-classic-$logback_version.jar" | sha1sum -c - \
+    && mv logback-classic-$logback_version.jar /opt/shib-jetty-base/lib/logging/ \
 
 # Download the logback-core library for Jetty logging, verify the hash, and place \
     && cd / \
-    && wget http://central.maven.org/maven2/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar \
-    && echo "$logback_core_hash logback-core-1.2.3.jar" | sha1sum -c - \
-    && mv logback-core-1.2.3.jar /opt/shib-jetty-base/lib/logging/ \
+    && wget http://central.maven.org/maven2/ch/qos/logback/logback-core/$logback_version/logback-core-$logback_version.jar \
+    && echo "$logback_core_hash logback-core-$logback_version.jar" | sha1sum -c - \
+    && mv logback-core-$logback_version.jar /opt/shib-jetty-base/lib/logging/ \
 
 # Download the logback-access library for Jetty logging, verify the hash, and place \
      && cd / \
-    && wget http://central.maven.org/maven2/ch/qos/logback/logback-access/1.2.3/logback-access-1.2.3.jar \
-    && echo "$logback_access_hash logback-access-1.2.3.jar" | sha1sum -c - \
-    && mv logback-access-1.2.3.jar /opt/shib-jetty-base/lib/logging/ \
-
+    && wget http://central.maven.org/maven2/ch/qos/logback/logback-access/$logback_version/logback-access-$logback_version.jar \
+    && echo "$logback_access_hash logback-access-$logback_version.jar" | sha1sum -c - \
+    && mv logback-access-$logback_version.jar /opt/shib-jetty-base/lib/logging/ \
 
 # Setting owner ownership and permissions on new items in this command
     && chown -R root:jetty /opt \
