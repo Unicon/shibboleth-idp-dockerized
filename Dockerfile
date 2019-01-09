@@ -112,8 +112,7 @@ RUN useradd jetty -U -s /bin/false \
 
 COPY --from=temp /opt/ /opt/
 
-RUN cp /opt/jetty-home/bin/jetty.sh /etc/init.d/jetty \
-    && chmod +x /etc/init.d/jetty
+RUN chmod +x /opt/jetty-home/bin/jetty.sh
 
 # Opening 4443 (browser TLS), 8443 (mutual auth TLS)
 EXPOSE 4443 8443
