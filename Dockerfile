@@ -17,17 +17,16 @@ ENV java_version=8.0.192 \
 
 ENV JETTY_HOME=/opt/jetty-home \
     JETTY_BASE=/opt/shib-jetty-base
-#    PATH=$PATH:$JRE_HOME/bin
 
 RUN yum -y update \
-    && yum -y install wget tar which \
+    && yum -y install wget tar \
     && yum -y clean all
 
 # Download Java, verify the hash, and install
 RUN wget -q http://cdn.azul.com/zulu/bin/zulu$zulu_version-jdk$java_version-linux_x64.tar.gz \
     && echo "$java_hash  zulu$zulu_version-jdk$java_version-linux_x64.tar.gz" | md5sum -c - \
-    && tar -zxvf zulu$zulu_version-jdk$java_version-linux_x64.tar.gz -C /opt \
-    && ln -s /opt/zulu$zulu_version-jdk$java_version-linux_x64/jre/ /opt/jre-home
+    && tar -zxvf zulu$zulu_version-jdk$java_version-linux_x64.tar.gz -C /tmp \
+    && ln -s /tmp/zulu$zulu_version-jdk$java_version-linux_x64/ /tmp/jre-home
 
 # Download Jetty, verify the hash, and install, initialize a new base
 RUN wget -q http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/$jetty_version/jetty-distribution-$jetty_version.tar.gz \
@@ -39,7 +38,7 @@ RUN wget -q http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution
 RUN mkdir -p /opt/shib-jetty-base/modules /opt/shib-jetty-base/lib/ext  /opt/shib-jetty-base/lib/logging /opt/shib-jetty-base/resources \
     && cd /opt/shib-jetty-base \
     && touch start.ini \
-    && /opt/jre-home/bin/java -jar ../jetty-home/start.jar --add-to-startd=http,https,deploy,ext,annotations,jstl,rewrite \
+    && /tmp/jre-home/bin/java -jar ../jetty-home/start.jar --add-to-startd=http,https,deploy,ext,annotations,jstl,rewrite \
     && ln -s /run/secrets/jetty-secrets.ini $JETTY_BASE/start.d/secrets.ini 
 
 # Download Shibboleth IdP, verify the hash, and install
@@ -76,8 +75,7 @@ RUN wget -q http://central.maven.org/maven2/ch/qos/logback/logback-access/$logba
 # Setting owner ownership and permissions on new items in this command
 RUN useradd jetty -U -s /bin/false \
     && chown -R root:jetty /opt \
-    && chmod -R 640 /opt \
-    && chmod 750 /opt/jre-home/bin/java
+    && chmod -R 640 /opt
 
 COPY opt/shib-jetty-base/ /opt/shib-jetty-base/
 COPY opt/shibboleth-idp/ /opt/shibboleth-idp/
@@ -115,5 +113,5 @@ COPY --from=temp /opt/ /opt/
 # Opening 4443 (browser TLS), 8443 (mutual auth TLS)
 EXPOSE 4443 8443
 
-ENTRYPOINT ["/opt/jre-home/bin/java"]
+ENTRYPOINT ["/usr/bin/java"]
 CMD ["-Djetty.logging.dir=/opt/shib-jetty-base/logs", "-Djetty.home=/opt/jetty-home", "-Djetty.base=/opt/shib-jetty-base", "-Djava.io.tmpdir=/tmp", "-jar", "/opt/jetty-home/start.jar", "jetty.state=/opt/shib-jetty-base/jetty.state", "jetty-logging.xml", "jetty-started.xml"]
