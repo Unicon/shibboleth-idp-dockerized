@@ -1,4 +1,4 @@
-[![](https://badge.imagelayers.io/unicon/shibboleth-idp:latest.svg)](https://imagelayers.io/?images=unicon/shibboleth-idp:latest 'image layer analysis')
+[![](https://images.microbadger.com/badges/image/unicon/shibboleth-idp.svg)](https://microbadger.com/images/unicon/shibboleth-idp "docker image badge")
 
 # Major Change
 As of 10 Jan 2019 (v3.4.3), the build mechanism for this image has changed from the historical method to using multi-stage builds, which has several advantages for the image maintainers. This change should NOT impact image users, but please test and validate your deployment before pushing the new image directly into production. If you do find issues, please submit them at https://github.com/Unicon/shibboleth-idp-dockerized/issues.
