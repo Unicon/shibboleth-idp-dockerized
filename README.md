@@ -1,14 +1,12 @@
 [![](https://badge.imagelayers.io/unicon/shibboleth-idp:latest.svg)](https://imagelayers.io/?images=unicon/shibboleth-idp:latest 'image layer analysis')
 
 # Major Change
-This image is now based on OpenJDK-based Zulu and not Oracle Java. Some Shibboleth IdP adoptors have had issues with various OpenJDK releases. However, Zulu is a roboust, certified version of OpenJDK and initial testing with it has been positive.
-
-Docker Hub images have been updated utilizing Zulu. Instructions for switching to Oracle Java for local deployments can be view on the [project wiki](https://github.com/Unicon/shibboleth-idp-dockerized/wiki).
+As of 10 Jan 2019 (v3.4.3), the build mechanism for this image has changed from the historical method to using multi-stage builds, which has several advantages for the image maintainers. This change should NOT impact image users, but please test and validate your deployment before pushing the new image directly into production. If you do find issues, please submit them at https://github.com/Unicon/shibboleth-idp-dockerized/issues.
 
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 3.4.2 running on OpenJDK-based Zulu 8 Update 192 and Jetty 9.3.25 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes.
+This Docker image contains a deployed Shibboleth IdP 3.4.3 running on OpenJDK-based Zulu 8 Update 192 and Jetty 9.3.25 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes.
 
-Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the Dockerfile directly. This makes the build essentially deterministic.
+Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the `Dockerfile` directly. This makes the build essentially deterministic.
 
 A working example of how this image can be used can be found at https://github.com/UniconLabs/dockerized-idp-testbed.
 
@@ -178,22 +176,27 @@ Jetty Logs and Shibboleth IdP's `idp-process.log`are redirected to the console a
 
 Removing the `/opt/shib-jetty-base/etc/jetty-logging.xml` (or setting it to your own configuration) will cause Jetty's default behavior to occur. Restoring the IdP's baseline `logback.xml` via overlaying will cause the default IdP file logging behavior to occur.
 
-## Building from source:
+## Building from Source
 
 ```
 $ docker build --tag="<org_id>/shibboleth-idp" github.com/unicon/shibboleth-idp-dockerized
 ```
 
 ## Recipes
-Instructions for things like use the Oracle JVM and JCE with this image can be found at <https://github.com/Unicon/shibboleth-idp-dockerized/wiki/>.
+Instructions for things like using the Oracle JVM and JCE with this image can be found at <https://github.com/Unicon/shibboleth-idp-dockerized/wiki/>.
 
 ## Authors/Contributors
 
-  * John Gasper (<jgasper@unicon.net>)
+This project was developed as part of Unicon's [Open Source Support program](https://unicon.net/support), which is funded by our program subscribers. Professional support/integration assistance for this module is available. For more information, visit <https://unicon.net/opensource/shibboleth>.
+
+* John Gasper (<jgasper@unicon.net>)
 
 ## LICENSE
 
-Copyright 2016 Unicon, Inc.
+The contents of the built image are subject to their respective licenses.
+The following applies license applies to the Docker-based project files: 
+
+Copyright 2019 Unicon, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
