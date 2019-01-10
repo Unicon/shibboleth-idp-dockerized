@@ -97,16 +97,11 @@ LABEL maintainer="Unicon, Inc."\
       idp.jetty.version="9.3.25.v20180904" \
       idp.version="3.4.2"
 
-ENV JETTY_HOME=/opt/jetty-home \
-    JETTY_BASE=/opt/shib-jetty-base \
-    JETTY_MAX_HEAP=2048m \
-    JETTY_BROWSER_SSL_KEYSTORE_PASSWORD=changeme \
-    JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=changeme
-
 COPY bin/ /usr/local/bin/
+
 COPY --from=temp /etc/passwd /etc/passwd
 
-#RUN chmod 750 /usr/local/bin/run-jetty.sh /usr/local/bin/init-idp.sh
+#RUN chmod 750 /usr/local/bin/init-idp.sh
 
 COPY --from=temp /opt/ /opt/
 
