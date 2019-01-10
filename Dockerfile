@@ -16,8 +16,8 @@ ENV java_version=8.0.192 \
     logback_access_hash=e8a841cb796f6423c7afd8738df6e0e4052bf24a
 
 ENV JETTY_HOME=/opt/jetty-home \
-    JETTY_BASE=/opt/shib-jetty-base \
-    PATH=$PATH:$JRE_HOME/bin
+    JETTY_BASE=/opt/shib-jetty-base
+#    PATH=$PATH:$JRE_HOME/bin
 
 RUN yum -y update \
     && yum -y install wget tar which \
@@ -39,7 +39,8 @@ RUN wget -q http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution
 RUN mkdir -p /opt/shib-jetty-base/modules /opt/shib-jetty-base/lib/ext  /opt/shib-jetty-base/lib/logging /opt/shib-jetty-base/resources \
     && cd /opt/shib-jetty-base \
     && touch start.ini \
-    && /opt/jre-home/bin/java -jar ../jetty-home/start.jar --add-to-startd=http,https,deploy,ext,annotations,jstl,rewrite
+    && /opt/jre-home/bin/java -jar ../jetty-home/start.jar --add-to-startd=http,https,deploy,ext,annotations,jstl,rewrite \
+    && ln -s /run/secrets/jetty-secrets.ini $JETTY_BASE/start.d/secrets.ini 
 
 # Download Shibboleth IdP, verify the hash, and install
 RUN wget -q https://shibboleth.net/downloads/identity-provider/$idp_version/shibboleth-identity-provider-$idp_version.tar.gz \
@@ -86,8 +87,12 @@ RUN mkdir /opt/shib-jetty-base/logs \
     && chown -R root:jetty /opt/shib-jetty-base \
     && chmod -R 640 /opt/shib-jetty-base \
     && chmod -R 750 /opt/shibboleth-idp/bin
-    
-FROM centos:centos7
+
+RUN find /opt -exec touch --date="1970-01-01T00:00:00Z" {} \; \
+    && touch --date="1970-01-01T00:00:00Z" /etc/passwd
+
+
+FROM gcr.io/distroless/java:debug
 
 LABEL maintainer="Unicon, Inc."\
       idp.java.version="8.0.192" \
@@ -98,23 +103,17 @@ ENV JETTY_HOME=/opt/jetty-home \
     JETTY_BASE=/opt/shib-jetty-base \
     JETTY_MAX_HEAP=2048m \
     JETTY_BROWSER_SSL_KEYSTORE_PASSWORD=changeme \
-    JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=changeme \
-    PATH=$PATH:$JRE_HOME/bin
-
-RUN yum -y update \
-    && yum -y install which \
-    && yum -y clean all
+    JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=changeme
 
 COPY bin/ /usr/local/bin/
+COPY --from=temp /etc/passwd /etc/passwd
 
-RUN useradd jetty -U -s /bin/false \
-    && chmod 750 /usr/local/bin/run-jetty.sh /usr/local/bin/init-idp.sh
+#RUN chmod 750 /usr/local/bin/run-jetty.sh /usr/local/bin/init-idp.sh
 
 COPY --from=temp /opt/ /opt/
-
-RUN chmod +x /opt/jetty-home/bin/jetty.sh
 
 # Opening 4443 (browser TLS), 8443 (mutual auth TLS)
 EXPOSE 4443 8443
 
-CMD ["run-jetty.sh"]
+ENTRYPOINT ["/opt/jre-home/bin/java"]
+CMD ["-Djetty.logging.dir=/opt/shib-jetty-base/logs", "-Djetty.home=/opt/jetty-home", "-Djetty.base=/opt/shib-jetty-base", "-Djava.io.tmpdir=/tmp", "-jar", "/opt/jetty-home/start.jar", "jetty.state=/opt/shib-jetty-base/jetty.state", "jetty-logging.xml", "jetty-started.xml"]
