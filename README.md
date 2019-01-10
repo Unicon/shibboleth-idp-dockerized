@@ -14,11 +14,12 @@ A working example of how this image can be used can be found at https://github.c
 Currently maintained tags:
 
 * lastest: master branch
-* 3.4.2 - The latest 3.4.2 image
+* 3.4.3 - The latest 3.4.3 image
 
 There are also date-based tags tied to versions to allow users to maintain consistency between minor changes, such as Jetty or Java version upgrades. See https://github.com/Unicon/shibboleth-idp-dockerized/wiki/Tags for details.
 
 Retired tags:
+* 3.4.2 - The latest 3.4.2 image
 * 3.4.1 - The latest 3.4.1 image
 * 3.4.0 - The latest 3.4.0 image
 * 3.3.3 - The latest 3.3.3 image
