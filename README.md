@@ -4,7 +4,7 @@
 As of 10 Jan 2019 (v3.4.3), the build mechanism for this image has changed from the historical method to using multi-stage builds, which has several advantages for the image maintainers. This change should NOT impact image users, but please test and validate your deployment before pushing the new image directly into production. If you do find issues, please submit them at https://github.com/Unicon/shibboleth-idp-dockerized/issues.
 
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 3.4.3 running on OpenJDK-based Zulu 8 Update 192 and Jetty 9.3.25 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes.
+This Docker image contains a deployed Shibboleth IdP 3.4.3 running on OpenJDK-based Zulu 8 Update 212 and Jetty 9.3.27 running on the latest CentOS 7 base. This image is a base image and should be used to set the configuration with local changes.
 
 Every component (Java, Jetty, Shibboleth IdP, and extensions) in this image is verified using cryptographic hashes obtained from each vendor and stored in the `Dockerfile` directly. This makes the build essentially deterministic.
 

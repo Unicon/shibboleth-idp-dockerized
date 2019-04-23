@@ -1,10 +1,10 @@
 FROM centos:centos7 as temp
 
-ENV java_version=8.0.192 \
-    zulu_version=8.33.0.1 \
-    java_hash=5db43a961b477533054504a8cbcfa5f1 \
-    jetty_version=9.3.25.v20180904 \
-    jetty_hash=dff5f1573d8ecbf9e6036cebcb64642173a2262d \
+ENV java_version=8.0.212 \
+    zulu_version=8.38.0.13 \
+    java_hash=14136019014c020fee0fc13073d00388 \
+    jetty_version=9.3.27.v20190418 \
+    jetty_hash=7c7c80dd1c9f921771e2b1a05deeeec652d5fcaa \
     idp_version=3.4.3 \
     idp_hash=eb86bc7b6366ce2a44f97cae1b014d307b84257e3149469b22b2d091007309db \
     dta_hash=2f547074b06952b94c35631398f36746820a7697 \
@@ -24,10 +24,10 @@ RUN yum -y update \
     && yum -y clean all
 
 # Download Java, verify the hash, and install
-RUN wget -q http://cdn.azul.com/zulu/bin/zulu$zulu_version-jdk$java_version-linux_x64.tar.gz \
-    && echo "$java_hash  zulu$zulu_version-jdk$java_version-linux_x64.tar.gz" | md5sum -c - \
-    && tar -zxvf zulu$zulu_version-jdk$java_version-linux_x64.tar.gz -C /opt \
-    && ln -s /opt/zulu$zulu_version-jdk$java_version-linux_x64/jre/ /opt/jre-home
+RUN wget -q http://cdn.azul.com/zulu/bin/zulu$zulu_version-ca-jdk$java_version-linux_x64.tar.gz \
+    && echo "$java_hash  zulu$zulu_version-ca-jdk$java_version-linux_x64.tar.gz" | md5sum -c - \
+    && tar -zxvf zulu$zulu_version-ca-jdk$java_version-linux_x64.tar.gz -C /opt \
+    && ln -s /opt/zulu$zulu_version-ca-jdk$java_version-linux_x64/jre/ /opt/jre-home
 
 # Download Jetty, verify the hash, and install, initialize a new base
 RUN wget -q http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/$jetty_version/jetty-distribution-$jetty_version.tar.gz \
@@ -90,8 +90,8 @@ RUN mkdir /opt/shib-jetty-base/logs \
 FROM centos:centos7
 
 LABEL maintainer="Unicon, Inc."\
-      idp.java.version="8.0.192" \
-      idp.jetty.version="9.3.25.v20180904" \
+      idp.java.version="8.0.212" \
+      idp.jetty.version="9.3.27.v20190418" \
       idp.version="3.4.3"
 
 ENV JETTY_HOME=/opt/jetty-home \
