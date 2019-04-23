@@ -1,8 +1,8 @@
 FROM centos:centos7
 
 LABEL maintainer="Unicon, Inc."\
-      idp.java.version="8.0.192" \
-      idp.jetty.version="9.3.25.v20180904" \
+      idp.java.version="8.0.212" \
+      idp.jetty.version="9.3.27.v20190418" \
       idp.version="3.4.2"
 
 ENV JETTY_HOME=/opt/jetty-home \
@@ -17,11 +17,11 @@ RUN yum -y update \
     && yum -y clean all
 
 RUN set -x; \
-    java_version=8.0.192; \
-    zulu_version=8.33.0.1; \
-    java_hash=5db43a961b477533054504a8cbcfa5f1; \
-    jetty_version=9.3.25.v20180904; \
-    jetty_hash=dff5f1573d8ecbf9e6036cebcb64642173a2262d; \
+    java_version=8.0.212; \
+    zulu_version=8.38.0.13; \
+    java_hash=14136019014c020fee0fc13073d00388; \
+    jetty_version=9.3.27.v20190418; \
+    jetty_hash=7c7c80dd1c9f921771e2b1a05deeeec652d5fcaa; \
     idp_version=3.4.2; \
     idp_hash=e946bafedfca21af6bba152605fbbb7fce9c1f6a1b3e1c8c8d2cf26e53bcbc11; \
     dta_hash=2f547074b06952b94c35631398f36746820a7697; \
@@ -36,11 +36,11 @@ RUN set -x; \
 
 # Download Java, verify the hash, and install \
     && cd / \
-    && wget http://cdn.azul.com/zulu/bin/zulu$zulu_version-jdk$java_version-linux_x64.tar.gz \
-    && echo "$java_hash  zulu$zulu_version-jdk$java_version-linux_x64.tar.gz" | md5sum -c - \
-    && tar -zxvf zulu$zulu_version-jdk$java_version-linux_x64.tar.gz -C /opt \
-    && rm zulu$zulu_version-jdk$java_version-linux_x64.tar.gz \
-    && ln -s /opt/zulu$zulu_version-jdk$java_version-linux_x64/jre/ /opt/jre-home \
+    && wget http://cdn.azul.com/zulu/bin/zulu$zulu_version-ca-jdk$java_version-linux_x64.tar.gz \
+    && echo "$java_hash  zulu$zulu_version-ca-jdk$java_version-linux_x64.tar.gz" | md5sum -c - \
+    && tar -zxvf zulu$zulu_version-ca-jdk$java_version-linux_x64.tar.gz -C /opt \
+    && rm zulu$zulu_version-ca-jdk$java_version-linux_x64.tar.gz \
+    && ln -s /opt/zulu$zulu_version-ca-jdk$java_version-linux_x64/jre/ /opt/jre-home \
 
 # Download Jetty, verify the hash, and install, initialize a new base \
     && cd / \
